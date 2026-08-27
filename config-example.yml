@@ -1,0 +1,15 @@
+server:
+  port: 8080
+  # subpath must start and end with '/'
+  subpath: "/webpanel/"
+
+auth:
+  password: "<web ui password>"
+
+database:
+  host: "<db address>"
+  port: <db port>
+  user: "<db user>"
+  password: "<db password>"
+  dbname: "<db name>"
+  sslmode: "disable"
