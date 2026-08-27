@@ -1,3 +1,4 @@
+# filename should be `config.yml`
 server:
   port: 8080
   # subpath must start and end with '/'

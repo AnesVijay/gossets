@@ -15,7 +15,7 @@ WORKDIR /app
 
 COPY --chmod=755 gossets .
 
-# Copy templates and config
+# Copy templates
 COPY  templates ./templates
 
 # Expose default port

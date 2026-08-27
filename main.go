@@ -210,6 +210,7 @@ func logoutHandler(w http.ResponseWriter, r *http.Request) {
 
 // List all domains
 func listDomains(w http.ResponseWriter, r *http.Request) {
+	log.Printf("📍 [listDomains] Path: %s, Method: %s", r.URL.Path, r.Method)
     rows, err := db.Query(`
         SELECT id, domain_name, expiration_date,
                EXTRACT(DAY FROM (expiration_date - NOW()))::INTEGER as days_remaining
@@ -254,6 +255,7 @@ func listDomains(w http.ResponseWriter, r *http.Request) {
 
 // Add domain
 func addDomain(w http.ResponseWriter, r *http.Request) {
+	log.Printf("📍 [addDomains] Path: %s, Method: %s", r.URL.Path, r.Method)
     if r.Method == http.MethodPost {
         domainName := strings.TrimSpace(r.FormValue("domain_name"))
         expirationDate := r.FormValue("expiration_date")
@@ -308,6 +310,7 @@ func addDomain(w http.ResponseWriter, r *http.Request) {
 
 // Edit domain
 func editDomain(w http.ResponseWriter, r *http.Request) {
+	log.Printf("📍 [editDomains] Path: %s, Method: %s", r.URL.Path, r.Method)
     idStr := r.URL.Query().Get("id")
     if idStr == "" {
         http.Error(w, "Missing ID", http.StatusBadRequest)
@@ -399,6 +402,7 @@ func editDomain(w http.ResponseWriter, r *http.Request) {
 
 // Delete domain
 func deleteDomain(w http.ResponseWriter, r *http.Request) {
+	log.Printf("📍 [deleteDomains] Path: %s, Method: %s", r.URL.Path, r.Method)
     idStr := r.URL.Query().Get("id")
     if idStr == "" {
         http.Error(w, "Missing ID", http.StatusBadRequest)
