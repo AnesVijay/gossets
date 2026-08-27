@@ -243,8 +243,10 @@ func listDomains(w http.ResponseWriter, r *http.Request) {
 
     data := struct {
         Domains []Domain
+		Subpath string
     }{
         Domains: domains,
+		Subpath: config.Server.Subpath,
     }
 
     tmpl.ExecuteTemplate(w, "index.html", data)

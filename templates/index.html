@@ -77,8 +77,8 @@
                     </td>
                     <td>
                         <div class="actions">
-                            <a href="/edit?id={{ .ID }}" class="btn btn-sm btn-warning">✏️ Edit</a>
-                            <a href="/delete?id={{ .ID }}" class="btn btn-sm btn-danger" onclick="return confirm('Delete {{ .DomainName }}?')">🗑️ Delete</a>
+                            <a href="{{ .Subpath }}edit?id={{ .ID }}" class="btn btn-sm btn-warning">✏️ Edit</a>
+                            <a href="{{ .Subpath }}delete?id={{ .ID }}" class="btn btn-sm btn-danger" onclick="return confirm('Delete {{ .DomainName }}?')">🗑️ Delete</a>
                         </div>
                     </td>
                 </tr>
