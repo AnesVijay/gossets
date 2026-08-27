@@ -50,6 +50,17 @@ var (
     config Config
 )
 
+func redirectWithSubpath(w http.ResponseWriter, r *http.Request, path string) {
+    // Просто добавляем subpath к path
+    if config.Server.Subpath != "" {
+        // Убираем дублирование слешей
+        target := strings.TrimSuffix(config.Server.Subpath, "/") + "/" + strings.TrimPrefix(path, "/")
+        http.Redirect(w, r, target, http.StatusSeeOther)
+        return
+    }
+    http.Redirect(w, r, path, http.StatusSeeOther)
+}
+
 func main() {
     // Load config
     if err := loadConfig("config.yml"); err != nil {
@@ -163,7 +174,7 @@ func authMiddleware(next http.HandlerFunc) http.HandlerFunc {
     return func(w http.ResponseWriter, r *http.Request) {
         cookie, err := r.Cookie("auth")
         if err != nil || cookie.Value != "authenticated" {
-            http.Redirect(w, r, "/login", http.StatusSeeOther)
+            redirectWithSubpath(w, r, "/login")
             return
         }
         next(w, r)
@@ -182,7 +193,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
                 Expires: time.Now().Add(24 * time.Hour),
                 Path:    "/",
             })
-            http.Redirect(w, r, "/", http.StatusSeeOther)
+            redirectWithSubpath(w, r, "/")
             return
         }
 
@@ -205,7 +216,7 @@ func logoutHandler(w http.ResponseWriter, r *http.Request) {
         MaxAge: -1,
         Path:   "/",
     })
-    http.Redirect(w, r, "/login", http.StatusSeeOther)
+    redirectWithSubpath(w, r, "/login")
 }
 
 // List all domains
@@ -295,7 +306,7 @@ func addDomain(w http.ResponseWriter, r *http.Request) {
             return
         }
 
-        http.Redirect(w, r, "/", http.StatusSeeOther)
+        redirectWithSubpath(w, r, "/")
         return
     }
 
@@ -378,7 +389,7 @@ func editDomain(w http.ResponseWriter, r *http.Request) {
             return
         }
 
-        http.Redirect(w, r, "/", http.StatusSeeOther)
+        redirectWithSubpath(w, r, "/")
         return
     }
 
@@ -421,5 +432,5 @@ func deleteDomain(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    http.Redirect(w, r, "/", http.StatusSeeOther)
+    redirectWithSubpath(w, r, "/")
 }
