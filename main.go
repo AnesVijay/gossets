@@ -73,9 +73,10 @@ func main() {
 	mux.HandleFunc("/login", loginHandler)
 	mux.HandleFunc("/logout", logoutHandler)
 
-	var handler http.Handler = mux
+	// var handler http.Handler = mux
 	if config.Server.Subpath != "" {
-		handler = http.StripPrefix(config.Server.Subpath, mux)
+		//handler = http.StripPrefix(config.Server.Subpath, mux)
+		http.Handle(config.Server.Subpath, http.StripPrefix(strings.TrimSuffix(config.Server.Subpath, "/"), mux))
 		log.Printf("📍 Running behind proxy with subpath: %s", config.Server.Subpath)
 	} else {
 		log.Printf("📍 Running directly (no proxy)")
@@ -95,9 +96,9 @@ func main() {
     // Start server
     addr := fmt.Sprintf(":%d", config.Server.Port)
     log.Printf("🚀 Server starting on http://localhost%s", addr)
-	// MUX :
-	log.Fatal(http.ListenAndServe(addr, handler))
-	// HTTP : log.Fatal(http.ListenAndServe(addr, nil))
+	// MUX : log.Fatal(http.ListenAndServe(addr, handler))
+	// HTTP : 
+	log.Fatal(http.ListenAndServe(addr, nil))
 }
 
 // Load config from YAML
